@@ -48,8 +48,12 @@ public class MovieInfoService {
 	
 	public MovieBO updateMovie(MovieBO movieBO) throws MovieNotFoundException {
 		
+	    
 		MovieBO savedMovieBO = null;
 		if (movieBO.getMovieId() !=null) {
+			
+			logger.info("MovieInfoService is called for updation with id as  {} ", movieBO.getMovieId());
+			
 		
 			Optional<Movie> movieOptional = movieRepository.findById(movieBO.getMovieId());
 			
@@ -61,6 +65,8 @@ public class MovieInfoService {
 				
 				savedMovieBO = new MovieBO(savedMovie.getMovieId(), savedMovie.getName(), savedMovie.getInformation());
 			} else {
+				logger.info("MovieInfoService throws an exception - MovieForUpdateNotFound");
+				
 				throw new MovieNotFoundException("MovieForUpdateNotFound");
 			}
 		}
@@ -75,8 +81,13 @@ public class MovieInfoService {
 		movie.setName(movieBO.getName());
 		movie.setInformation(movieBO.getInformation());
 		Movie savedMovie = movieRepository.save(movie);
+		if (savedMovie != null) {
+			logger.info("MovieInfoService addMovie returns - savedMovie with id {}", savedMovie.getMovieId() );
 		
-		return new MovieBO(savedMovie.getMovieId(), savedMovie.getName(), savedMovie.getInformation());
+			return new MovieBO(savedMovie.getMovieId(), savedMovie.getName(), savedMovie.getInformation());
+		} else {
+			throw new MovieNotFoundException("MovieNotAdded");
+		}
 		
 		
 	}
