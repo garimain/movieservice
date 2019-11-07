@@ -41,7 +41,7 @@ public class MovieInfoServiceTest {
 		
 	}
 	
-	//@Test
+	@Test
 	public void getAllMoviesTest() {
 		
 		Mockito.when(movieRepository.findAll())
@@ -126,7 +126,7 @@ public class MovieInfoServiceTest {
 	}
 	
 	
-	@Test
+	//@Test
 	public void addMovieTest() {
 		
 		Movie movie = new Movie(Integer.valueOf("1"), "new Movie", "Some movie description");
