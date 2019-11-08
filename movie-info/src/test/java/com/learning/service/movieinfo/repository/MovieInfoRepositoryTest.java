@@ -24,7 +24,7 @@ public class MovieInfoRepositoryTest {
 	
 	@Test
 	public void addMovie() {
-		Movie movie = new Movie (null,  "PS: Hello World", "Its a great world");
+		Movie movie = new Movie (null,  "PS: Hello World", "Its a great world", "Small");
 		
 		Movie persistentMovie = tem.persistFlushFind(movie);
 		
@@ -35,7 +35,7 @@ public class MovieInfoRepositoryTest {
 	
 	@Test
 	public void findByMovieName() {
-		Movie persistentMovie = repository.save(new Movie (null,  "PS: Hello World", "Its a great world"));
+		Movie persistentMovie = repository.save(new Movie (null,  "PS: Hello World", "Its a great world", "Medium"));
 		
 		Movie searchedMovie = repository.findByName("PS: Hello World");
 		
@@ -46,7 +46,7 @@ public class MovieInfoRepositoryTest {
 	}
 	@Test
 	public void findByMovieInformation() {
-		Movie persistentMovie = repository.save(new Movie (null,  "PS: Hello World", "Its a great world"));
+		Movie persistentMovie = repository.save(new Movie (null,  "PS: Hello World", "Its a great world", "Small"));
 		
 		Movie searchedMovie = repository.findByInformation("Its a great world");
 		

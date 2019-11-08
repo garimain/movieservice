@@ -45,7 +45,7 @@ public class MovieInfoServiceTest {
 	public void getAllMoviesTest() {
 		
 		Mockito.when(movieRepository.findAll())
-			    .thenReturn(Collections.singletonList(new Movie(Integer.valueOf("1"), "new Movie", "Some movie description")));
+			    .thenReturn(Collections.singletonList(new Movie(Integer.valueOf("1"), "new Movie", "Some movie description", "Small")));
 		
 		
 		List<MovieBO> movieList = movieService.getAllMovies();
@@ -60,7 +60,7 @@ public class MovieInfoServiceTest {
 	//@Test
 	public void getMovieDetailsFoundTest() {
 		
-		Optional<Movie> movie = Optional.of(new Movie(Integer.valueOf("1"), "new Movie", "Some movie description"));
+		Optional<Movie> movie = Optional.of(new Movie(Integer.valueOf("1"), "new Movie", "Some movie description", "Small"));
 		
 		Mockito.when(movieRepository.findById(1)).thenReturn(movie);
 		
@@ -88,14 +88,14 @@ public class MovieInfoServiceTest {
 	//@Test
 	public void updateMovieDetailsFoundTest() {
 		
-		Optional<Movie> movie = Optional.of(new Movie(Integer.valueOf("1"), "new Movie", "Some movie description"));
+		Optional<Movie> movie = Optional.of(new Movie(Integer.valueOf("1"), "new Movie", "Some movie description", "Small"));
 		
 		Mockito.when(movieRepository.findById(1)).thenReturn(movie);
 		
 		Mockito.when(movieRepository.save(movie.get())).thenReturn(movie.get());
 		
 		
-		MovieBO movieBO = new MovieBO(Integer.valueOf("1"), "new Movie 2", "Some movie description 2");
+		MovieBO movieBO = new MovieBO(Integer.valueOf("1"), "new Movie 2", "Some movie description 2", "Small");
 		
 		
 		MovieBO movieObj = movieService.updateMovie(movieBO);
@@ -114,7 +114,7 @@ public class MovieInfoServiceTest {
 		Mockito.when(movieRepository.findById(1)).thenReturn(movie);
 		
 		
-		MovieBO movieBO = new MovieBO(Integer.valueOf("1"), "new Movie 2", "Some movie description 2");
+		MovieBO movieBO = new MovieBO(Integer.valueOf("1"), "new Movie 2", "Some movie description 2", "Small");
 		
 		
 		MovieBO movieObj = movieService.updateMovie(movieBO);
@@ -129,12 +129,12 @@ public class MovieInfoServiceTest {
 	//@Test
 	public void addMovieTest() {
 		
-		Movie movie = new Movie(Integer.valueOf("1"), "new Movie", "Some movie description");
+		Movie movie = new Movie(Integer.valueOf("1"), "new Movie", "Some movie description", "Small");
 		
 		Mockito.when(movieRepository.save(movie)).thenReturn(movie);
 	
 		
-		MovieBO movieBO = new MovieBO(Integer.valueOf("1"), "new Movie", "Some movie description");
+		MovieBO movieBO = new MovieBO(Integer.valueOf("1"), "new Movie", "Some movie description", "Small");
 		
 		MovieBO movieObj = movieService.addMovie(movieBO);
 		

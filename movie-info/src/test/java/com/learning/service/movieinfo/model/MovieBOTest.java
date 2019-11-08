@@ -12,7 +12,7 @@ public class MovieBOTest {
 	@Test
 	public void addNewMovieTest() {
 		
-		Movie movie = new Movie(Integer.getInteger("1"), "PS: I don't love you", "Same old love bullshit");
+		Movie movie = new Movie(Integer.getInteger("1"), "PS: I don't love you", "Same old love bullshit", "Small");
 		
 		Assert.assertEquals(movie.getMovieId(), Integer.getInteger("1"));
 		

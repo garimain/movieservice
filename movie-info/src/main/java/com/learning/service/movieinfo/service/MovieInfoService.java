@@ -7,20 +7,28 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
 
+import com.learning.service.movieinfo.common.exception.MovieNotAddedException;
 import com.learning.service.movieinfo.common.exception.MovieNotFoundException;
+import com.learning.service.movieinfo.common.exception.MovieNotUpdatedException;
 import com.learning.service.movieinfo.model.MovieBO;
 import com.learning.service.movieinfo.repository.MovieRepository;
 import com.learning.service.movieinfo.repository.model.Movie;
 
 @Service
+@RefreshScope
 public class MovieInfoService {
 	
 	Logger logger = LoggerFactory.getLogger(MovieInfoService.class);
 	
 	@Autowired
 	private MovieRepository movieRepository;
+	
+	@Value("${movie-info.screenType}")
+	private String screenType;
 	
 	public MovieBO getMovieDetails(Integer movieId) throws MovieNotFoundException {
 		
@@ -30,7 +38,7 @@ public class MovieInfoService {
 		
 		if (movieOptional.isPresent()) {
 			Movie movie = movieOptional.get();
-			return new MovieBO(movie.getMovieId(), movie.getName(), movie.getInformation());
+			return new MovieBO(movie.getMovieId(), movie.getName(), movie.getInformation(), movie.getScreenType());
 		} else {
 			throw new MovieNotFoundException("MovieForSearhNotFound");
 		}
@@ -40,7 +48,7 @@ public class MovieInfoService {
 		
 		List<Movie> movies = movieRepository.findAll();
 		
-		List<MovieBO> moviesBOList = movies.stream().map(m->new MovieBO(m.getMovieId(), m.getName(), m.getInformation()))
+		List<MovieBO> moviesBOList = movies.stream().map(m->new MovieBO(m.getMovieId(), m.getName(), m.getInformation(), m.getScreenType()))
 				.collect(Collectors.toList());
 		
 		return moviesBOList;
@@ -61,13 +69,20 @@ public class MovieInfoService {
 				Movie movie = movieOptional.get();
 				movie.setName(movieBO.getName());
 				movie.setInformation(movieBO.getInformation());
+				
+				if (movieBO.getScreenType() !=null) {
+					movie.setScreenType(movieBO.getScreenType());
+				} else {
+					movie.setScreenType(screenType);
+				}
+				
 				Movie savedMovie = movieRepository.save(movie);
 				
-				savedMovieBO = new MovieBO(savedMovie.getMovieId(), savedMovie.getName(), savedMovie.getInformation());
+				savedMovieBO = new MovieBO(savedMovie.getMovieId(), savedMovie.getName(), savedMovie.getInformation(), savedMovie.getScreenType());
 			} else {
 				logger.info("MovieInfoService throws an exception - MovieForUpdateNotFound");
 				
-				throw new MovieNotFoundException("MovieForUpdateNotFound");
+				throw new MovieNotUpdatedException("MovieForUpdateNotFound");
 			}
 		}
 		
@@ -80,13 +95,20 @@ public class MovieInfoService {
 		Movie movie = new Movie();
 		movie.setName(movieBO.getName());
 		movie.setInformation(movieBO.getInformation());
+		
+		if (movieBO.getScreenType() !=null) {
+			movie.setScreenType(movieBO.getScreenType());
+		} else {
+			movie.setScreenType(screenType);
+		}
+		
 		Movie savedMovie = movieRepository.save(movie);
 		if (savedMovie != null) {
 			logger.info("MovieInfoService addMovie returns - savedMovie with id {}", savedMovie.getMovieId() );
 		
-			return new MovieBO(savedMovie.getMovieId(), savedMovie.getName(), savedMovie.getInformation());
+			return new MovieBO(savedMovie.getMovieId(), savedMovie.getName(), savedMovie.getInformation(), savedMovie.getScreenType());
 		} else {
-			throw new MovieNotFoundException("MovieNotAdded");
+			throw new MovieNotAddedException("MovieNotAdded");
 		}
 		
 		

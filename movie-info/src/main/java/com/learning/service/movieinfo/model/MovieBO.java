@@ -12,6 +12,6 @@ public class MovieBO {
 	private Integer movieId;
 	private String name;
 	private String information;
-		
+	private String screenType;
 
 }
