@@ -1,5 +1,6 @@
 package com.learning.service.movieinfo.repository.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,6 +18,7 @@ public class Movie {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "movie_id")
 	private Integer movieId;
 	private String name;
 	private String information;
