@@ -27,7 +27,7 @@ public class MovieController {
 	private MovieInfoService movieInfoService;
 	
 	
-	@RequestMapping(path = "/{movieId}", method = RequestMethod.GET)
+	@RequestMapping(path = "/movie/{movieId}", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	public MovieBO getMovie(@PathVariable(name = "movieId") String movieId) {
 		
@@ -51,7 +51,7 @@ public class MovieController {
 		
 	}
 	
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST, path = "/movie")
 	@ResponseStatus(HttpStatus.CREATED)
 	public MovieBO addMovie(@RequestBody MovieBO movieBO) {
 		
@@ -64,7 +64,7 @@ public class MovieController {
 		
 	}
 	
-	@RequestMapping(method = RequestMethod.PUT)
+	@RequestMapping(method = RequestMethod.PUT, path="/movie")
 	@ResponseStatus(HttpStatus.OK)
 	public MovieBO updateMovie(@RequestBody MovieBO movieBO) {
 		
@@ -77,7 +77,7 @@ public class MovieController {
 	}
 	
 	
-	@RequestMapping(path = "/{movieId}", method = RequestMethod.DELETE)
+	@RequestMapping(path = "/movie/{movieId}", method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.OK)
 	public void deleteMovie(@PathVariable(name = "movieId") String movieId) {
 		
