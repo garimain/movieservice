@@ -1,5 +1,6 @@
 package com.learning.service.movieinfo.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -44,7 +45,8 @@ public class MovieInfoService {
 		}
 	}
 	
-	public List<MovieBO> getAllMovies() throws MovieNotFoundException {
+	public List<MovieBO> getAllMovies() {
+		
 		
 		List<Movie> movies = movieRepository.findAll();
 		
@@ -53,6 +55,25 @@ public class MovieInfoService {
 		
 		return moviesBOList;
 	}
+	
+	public List<MovieBO> getMovies(String movieIds)  {
+		
+		String[] movieIdsStr = movieIds.split(",");
+		List<Integer> movieIdentifiers =  new ArrayList<Integer>();
+		
+		for (String s : movieIdsStr) {
+			movieIdentifiers.add(Integer.valueOf(s));
+		}
+		
+		List<Movie> movies = movieRepository.findAllById(movieIdentifiers);
+		
+		List<MovieBO> moviesBOList = movies.stream().map(m->new MovieBO(m.getMovieId(), m.getName(), m.getInformation(), m.getScreenType()))
+				.collect(Collectors.toList());
+		
+		return moviesBOList;
+	}
+	
+	
 	
 	public MovieBO updateMovie(MovieBO movieBO) throws MovieNotFoundException {
 		

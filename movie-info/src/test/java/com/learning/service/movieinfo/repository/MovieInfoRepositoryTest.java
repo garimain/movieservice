@@ -1,5 +1,9 @@
 package com.learning.service.movieinfo.repository;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,6 +57,25 @@ public class MovieInfoRepositoryTest {
 		Assert.assertEquals(searchedMovie.getMovieId(), persistentMovie.getMovieId());
 		Assert.assertEquals(searchedMovie.getInformation(), persistentMovie.getInformation());
 		
+		
+	}
+	
+	
+	@Test
+	public void findByMovieIds() {
+		Movie persistentMovie1  = repository.save(new Movie (null,  "PS: Hello World", "Its a great world", "Small"));
+		Movie persistentMovie2  = repository.save(new Movie (null,  "PS: Hello World So Confusing", "Its a great world", "Big"));
+		
+		List<Integer> movieIds = new ArrayList<Integer>();
+		
+		movieIds.add(persistentMovie1.getMovieId());
+		movieIds.add(persistentMovie2.getMovieId());
+		
+		List<Movie> movieList = repository.findAllById(movieIds);
+		
+		List<Integer> savedMovieIds = movieList.stream().map( m -> m.getMovieId()).collect(Collectors.toList());
+		
+		Assert.assertEquals(savedMovieIds.size(), movieIds.size());
 		
 	}
 	

@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.learning.service.movieinfo.model.MovieBO;
+import com.learning.service.movieinfo.model.MovieInfoSearchResponseBO;
 import com.learning.service.movieinfo.service.MovieInfoService;
 
 @RestController
@@ -41,13 +43,21 @@ public class MovieController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
-	public List<MovieBO> getAllMovies() {
+	public MovieInfoSearchResponseBO getAllMovies(@RequestParam (name = "movieIds", required = false ) String movieIds) {
 		
-		logger.info("Movie service is called for all movies");
+		logger.info("Movie service is called movies with parameters  {} " + movieIds);
+		List<MovieBO> movies = null;
+		MovieInfoSearchResponseBO movieInfoSearchResponse = new MovieInfoSearchResponseBO();
 		
-		List<MovieBO> movies = movieInfoService.getAllMovies();
-		return movies;
+		if (movieIds != null) {
+			movies = movieInfoService.getMovies(movieIds);
+		} else {
+			movies = movieInfoService.getAllMovies();
+		}
 		
+		movieInfoSearchResponse.setMovieList(movies);
+		
+		return movieInfoSearchResponse;
 		
 	}
 	

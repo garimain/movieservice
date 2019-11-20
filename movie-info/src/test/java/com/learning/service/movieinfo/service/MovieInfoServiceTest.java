@@ -1,9 +1,11 @@
 package com.learning.service.movieinfo.service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import org.assertj.core.util.Arrays;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -149,8 +151,39 @@ public class MovieInfoServiceTest {
 	
 	
 	
+	@Test
+	public void getMoviesTestFound() {
+		
+		String movieIds = "1,2,3";
+		List<Integer> movieIdentifiers = new ArrayList<Integer> ();
+		
+		movieIdentifiers.add(new Integer(1));
+		movieIdentifiers.add(new Integer(2));
+		movieIdentifiers.add(new Integer(3));
+		
+		
+		Mockito.when(movieRepository.findAllById(movieIdentifiers)).thenReturn(getMovieList(3));
 	
+		List<MovieBO> movieList = movieService.getMovies(movieIds);
+		
+		Assert.assertEquals(movieList.size(), 3);
+		
+		
+		
+	}
 	
+	private List<Movie> getMovieList(int size) {
+		
+		List<Movie> list = new ArrayList<Movie>(size);
+		Movie movie = null;
+		
+		for (int i = 0; i < size; i++) {
+			movie = new Movie(i+1, String.valueOf(i), String.valueOf(i), "Super Big");
+			list.add(movie);
+		}
+		
+		return list;
+	}
 	
 
 }
